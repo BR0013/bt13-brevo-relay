@@ -1,0 +1,35 @@
+name: Build BT13 Brevo relay image
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'services/bt13-brevo-relay/**'
+      - '.github/workflows/bt13-brevo-relay-image.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and publish relay image
+        uses: docker/build-push-action@v6
+        with:
+          context: services/bt13-brevo-relay
+          file: services/bt13-brevo-relay/Dockerfile
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/bt13-brevo-relay:latest
