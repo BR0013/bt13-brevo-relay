@@ -33,3 +33,16 @@ jobs:
           file: services/bt13-brevo-relay/Dockerfile
           push: true
           tags: ghcr.io/br0013/bt13-brevo-relay:latest
+
+      - name: Set GHCR package visibility for Render Free
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          curl --silent --show-error --fail-with-body --request PUT \
+            --url https://api.github.com/user/packages/container/bt13-brevo-relay/visibility \
+            --header "Authorization: Bearer ${GITHUB_TOKEN}" \
+            --header 'Accept: application/vnd.github+json' \
+            --header 'X-GitHub-Api-Version: 2022-11-28' \
+            --data '{"visibility":"public"}' \
+            --output /dev/null
