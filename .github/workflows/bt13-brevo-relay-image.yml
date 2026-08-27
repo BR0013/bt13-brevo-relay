@@ -32,4 +32,4 @@ jobs:
           context: services/bt13-brevo-relay
           file: services/bt13-brevo-relay/Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/bt13-brevo-relay:latest
+          tags: ghcr.io/${{ lower(github.repository_owner) }}/bt13-brevo-relay:latest
